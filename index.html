@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* {
+  	box-sizing: border-box;
+}
+html { 
+  	background: url(https://res.cloudinary.com/simpleview/image/upload/v1497480003/clients/lasvegas/strip_b86ddbea-3add-4995-b449-ac85d700b027.jpg) no-repeat center center fixed; 
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}
+
+#mySearch {
+  	width: 100%;
+  	font-size: 15px;
+  	padding: 14px 20px 14px 40px;
+  	border: 1px solid #ddd;
+  	margin-bottom: 8px;
+}
+
+#myTable {
+	border-collapse: collapse;
+  	width: 100%;
+  	border: 1px;
+  	border-color: transparent;
+  	font-size: 20px;
+  	background-color:#F4F6F6;
+}
+
+#myTable th, #myTable td {
+  	text-align: left;
+  	padding: 12px;
+}
+
+#myTable tr {
+  	border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  	background-color: #D6DBDF;
+}
+</style>
+<title>Vegas Tracker</title>
+</head>
+<body>
+<div align="center">
+	<h1 style="color:#E74C3C; font-outline: 2px white; font-size: 60px;  font-family: Arial, Helvetica, sans-serif">Game Log</h1>
+	<a href="/new"><button style="font-size: 20px" type="submit">Enter New Game</button></a>
+	<br/><br/>
+	<input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search..." title="Type in a team name">
+	<br/><br/>
+	<table id="myTable">
+		<thead style="color:#A93226; background-color:#F4F6F6; font-size: 25px">
+			<tr>
+				<th>Game ID</th>
+				<th>Date</th>
+				<th>Home Team</th>
+				<th>Away Team</th>
+				<th>Conference</th>
+				<th>Spread</th>
+				<th>Final Score</th>
+				<th>Status</th>
+				<th colspan="2">Edit/Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="stats : ${listStats}">
+				<td th:text="${stats.id}">Game ID</td>
+				<td th:text="${stats.date}">Date</td>
+				<td th:text="${stats.home}">Home Team</td>
+				<td th:text="${stats.away}">Away Team</td>
+				<td th:text="${stats.conference}">Conference</td>
+				<td th:text="${stats.spread}">Spread</td>
+				<td th:text="${stats.score}">Final Score</td>
+				<td th:text="${stats.cover}">Status</td>
+				<td>
+                    <a th:href="@{'/edit/' + ${stats.id}}"><button style="font-size: 15px" type="submit">Edit</button></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a th:href="@{'/delete/' + ${stats.id}}" onclick="javascript:return confirm('Are you sure you want to delete this comment?')"><button style="font-size: 15px; color:rgb(100,0,0)" type="submit">Delete</button></a>
+                </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script>
+function myFunction() {
+  var input = document.getElementById("mySearch");
+  var filter = input.value.toUpperCase();
+  var table = document.getElementById("myTable");
+  var tr = table.getElementsByTagName("tr");
+  
+  for (var i = 0; i < tr.length; i++) {
+    var td = tr[i].getElementsByTagName("td")[3];
+    
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }      
+  }
+}
+</script>
+</body>
+</html>
